@@ -1,0 +1,970 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <title>IFC Viewer API Workbench</title>
+    <script type="module" crossorigin src="./assets/host-vlAi7pQk.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/modulepreload-polyfill-Dezn_h7o.js">
+    <link rel="modulepreload" crossorigin href="./assets/ElementGroups-BjZR4tX6.js">
+    <link rel="modulepreload" crossorigin href="./assets/IframeProtocol-hK1aq46i.js">
+    <link rel="modulepreload" crossorigin href="./sdk/ifc-viewer-client.js">
+    <link rel="stylesheet" crossorigin href="./assets/ElementGroups-CjSaCUqh.css">
+    <link rel="stylesheet" crossorigin href="./assets/host-Bgc0sYgw.css">
+  </head>
+  <body class="host-demo-body">
+    <header
+      class="host-workbench"
+      aria-label="IFC viewer API testing workbench"
+    >
+      <div class="host-workbench__topbar">
+        <div class="host-demo-brand">
+          <strong>IFC Viewer API Workbench</strong>
+          <span>Host-side controls for testing the iframe contract</span>
+        </div>
+        <output id="host-status" class="host-demo-status" aria-live="polite"
+          >Starting viewer…</output
+        >
+        <div class="host-workbench__topbar-actions">
+          <label class="host-demo-field host-language-control">
+            <span>Viewer language</span>
+            <select id="host-viewer-language">
+              <option value="en" selected>English</option>
+              <option value="es">Español</option>
+              <option value="eu">Euskara</option>
+              <option value="fr">Français</option>
+            </select>
+          </label>
+          <button id="host-set-language" type="button" class="host-demo-button host-demo-button--secondary">
+            setLanguage()
+          </button>
+          <label class="host-demo-field host-theme-control">
+            <span>Viewer theme</span>
+            <select id="host-viewer-theme">
+              <option value="default">Default</option>
+              <option value="light" selected>Light</option>
+              <option value="dark">Dark</option>
+              <option value="green">Green</option>
+              <option value="tecnalia">Tecnalia</option>
+              <option value="system">System</option>
+            </select>
+          </label>
+          <button id="host-set-theme" type="button" class="host-demo-button host-demo-button--secondary">
+            setAppearance()
+          </button>
+          <button id="host-ping" type="button" class="host-demo-button">
+            Ping viewer
+          </button>
+          <button
+            id="host-console-clear"
+            type="button"
+            class="host-demo-button host-demo-button--secondary"
+          >
+            Clear console
+          </button>
+          <button
+            id="host-console-copy"
+            type="button"
+            class="host-demo-button host-demo-button--secondary"
+          >
+            Copy console
+          </button>
+        </div>
+      </div>
+
+      <div class="host-workbench__body">
+        <div class="host-api-panels" aria-label="API endpoint controls">
+          <details class="host-api-group" open>
+            <summary>Models</summary>
+            <div class="host-api-group__body">
+              <section class="host-api-card">
+                <h2>Load local IFC / Fragments buffer</h2>
+                <div class="host-api-grid host-api-grid--wide">
+                  <label class="host-demo-field host-api-span-2">
+                    <span>Host file selector</span>
+                    <input
+                      id="host-model-file"
+                      type="file"
+                      accept=".ifc,.frag,.fragments,application/octet-stream"
+                    />
+                  </label>
+                  <label class="host-demo-field">
+                    <span>Model ID</span>
+                    <input
+                      id="host-buffer-model-id"
+                      type="text"
+                      value="local-model"
+                    />
+                  </label>
+                  <label class="host-demo-field">
+                    <span>Cache key</span>
+                    <input
+                      id="host-buffer-cache-key"
+                      type="text"
+                      value="demo:local-model:v1"
+                    />
+                  </label>
+                  <label class="host-demo-field">
+                    <span>Cache strategy</span>
+                    <select id="host-buffer-cache-strategy">
+                      <option value="prefer-cache" selected>
+                        prefer-cache
+                      </option>
+                      <option value="network-first">network-first</option>
+                      <option value="bypass">bypass</option>
+                    </select>
+                  </label>
+                  <label class="host-api-checkbox"
+                    ><input id="host-buffer-replace" type="checkbox" checked />
+                    Replace same model ID</label
+                  >
+                </div>
+                <div class="host-api-actions">
+                  <button
+                    id="host-load-file"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    loadModelFromBuffer()
+                  </button>
+                </div>
+              </section>
+
+              <section class="host-api-card">
+                <h2>Load model URL</h2>
+                <div class="host-api-grid host-api-grid--wide">
+                  <label class="host-demo-field host-api-span-2">
+                    <span>CORS-accessible URL</span>
+                    <input
+                      id="host-model-url"
+                      type="url"
+                      placeholder="https://files.example.com/project/model.ifc"
+                    />
+                  </label>
+                  <label class="host-demo-field">
+                    <span>Model ID</span>
+                    <input
+                      id="host-url-model-id"
+                      type="text"
+                      value="remote-model"
+                    />
+                  </label>
+                  <label class="host-demo-field">
+                    <span>File name</span>
+                    <input
+                      id="host-url-file-name"
+                      type="text"
+                      value="remote-model.ifc"
+                    />
+                  </label>
+                  <label class="host-demo-field">
+                    <span>Format</span>
+                    <select id="host-url-format">
+                      <option value="" selected>Infer from name</option>
+                      <option value="ifc">ifc</option>
+                      <option value="fragments">fragments</option>
+                    </select>
+                  </label>
+                  <label class="host-demo-field">
+                    <span>Cache key</span>
+                    <input
+                      id="host-url-cache-key"
+                      type="text"
+                      value="demo:remote-model:v1"
+                    />
+                  </label>
+                  <label class="host-demo-field">
+                    <span>Credentials</span>
+                    <select id="host-url-credentials">
+                      <option value="omit" selected>omit</option>
+                      <option value="same-origin">same-origin</option>
+                      <option value="include">include</option>
+                    </select>
+                  </label>
+                  <label class="host-demo-field">
+                    <span>Cache strategy</span>
+                    <select id="host-url-cache-strategy">
+                      <option value="prefer-cache" selected>
+                        prefer-cache
+                      </option>
+                      <option value="network-first">network-first</option>
+                      <option value="bypass">bypass</option>
+                    </select>
+                  </label>
+                  <label class="host-api-checkbox"
+                    ><input id="host-url-replace" type="checkbox" checked />
+                    Replace same model ID</label
+                  >
+                  <label class="host-demo-field host-api-span-2">
+                    <span>Request headers JSON</span>
+                    <textarea id="host-url-headers" rows="2" spellcheck="false">
+{}</textarea
+                    >
+                  </label>
+                </div>
+                <div class="host-api-actions">
+                  <button
+                    id="host-load-url"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    loadModelFromUrl()
+                  </button>
+                </div>
+              </section>
+
+              <section class="host-api-card">
+                <h2>Loaded models</h2>
+                <div class="host-api-inline">
+                  <label class="host-demo-field host-api-grow">
+                    <span>Model ID to unload</span>
+                    <input
+                      id="host-unload-model-id"
+                      type="text"
+                      value="local-model"
+                    />
+                  </label>
+                  <button
+                    id="host-list-models"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    listModels()
+                  </button>
+                  <button
+                    id="host-unload-model"
+                    type="button"
+                    class="host-demo-button host-demo-button--danger"
+                  >
+                    unloadModel()
+                  </button>
+                </div>
+              </section>
+            </div>
+          </details>
+
+          <details class="host-api-group" open>
+            <summary>Capabilities, selection and properties</summary>
+            <div class="host-api-group__body">
+              <section class="host-api-card">
+                <h2>Viewer capabilities</h2>
+                <div class="host-api-inline host-api-inline--wrap">
+                  <label class="host-api-checkbox"
+                    ><input
+                      id="host-selection-enabled"
+                      type="checkbox"
+                      checked
+                    />
+                    Selection</label
+                  >
+                  <label class="host-api-checkbox"
+                    ><input id="host-hiding-enabled" type="checkbox" checked />
+                    Hiding</label
+                  >
+                  <label class="host-api-checkbox"
+                    ><input
+                      id="host-isolation-enabled"
+                      type="checkbox"
+                      checked
+                    />
+                    Isolation</label
+                  >
+                  <button
+                    id="host-set-capabilities"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    setCapabilities()
+                  </button>
+                  <button
+                    id="host-get-capabilities"
+                    type="button"
+                    class="host-demo-button host-demo-button--secondary"
+                  >
+                    getCapabilities()
+                  </button>
+                </div>
+              </section>
+
+              <section class="host-api-card">
+                <h2>Side panels and hierarchy tabs</h2>
+                <label class="host-demo-field">
+                  <span>ViewerUiSettingsPatch JSON</span>
+                  <textarea id="host-ui-settings" rows="16" spellcheck="false">
+{
+  "showLeftPanel": true,
+  "showRightPanel": true,
+  "leftPanelTabs": {
+    "spatial": { "visible": true, "showProducts": false },
+    "types": { "visible": true, "showProducts": true },
+    "classifications": { "visible": true, "showProducts": true },
+    "groups": { "visible": true, "showProducts": true }
+  }
+}</textarea>
+                </label>
+                <div class="host-api-actions">
+                  <button
+                    id="host-set-ui-settings"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    setUiSettings()
+                  </button>
+                  <button
+                    id="host-get-ui-settings"
+                    type="button"
+                    class="host-demo-button host-demo-button--secondary"
+                  >
+                    getUiSettings()
+                  </button>
+                </div>
+              </section>
+
+              <section class="host-api-card">
+                <h2>Selection</h2>
+                <label class="host-demo-field">
+                  <span>Grouped element IDs JSON</span>
+                  <textarea
+                    id="host-selection-items"
+                    rows="5"
+                    spellcheck="false"
+                  >
+[
+  { "modelId": "local-model", "localIds": [1, 2, 3] }
+]</textarea
+                  >
+                </label>
+                <div class="host-api-actions">
+                  <label class="host-api-checkbox"
+                    ><input id="host-selection-additive" type="checkbox" />
+                    Additive</label
+                  >
+                  <button
+                    id="host-set-selection"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    select()
+                  </button>
+                  <button
+                    id="host-get-selection"
+                    type="button"
+                    class="host-demo-button host-demo-button--secondary"
+                  >
+                    getSelection()
+                  </button>
+                  <button
+                    id="host-clear-selection"
+                    type="button"
+                    class="host-demo-button host-demo-button--secondary"
+                  >
+                    clearSelection()
+                  </button>
+                  <button
+                    id="host-fill-selection"
+                    type="button"
+                    class="host-demo-button host-demo-button--secondary"
+                  >
+                    Refresh JSON from viewer
+                  </button>
+                </div>
+              </section>
+
+              <section class="host-api-card">
+                <h2>Element properties</h2>
+                <label class="host-demo-field">
+                  <span>Single element reference JSON</span>
+                  <textarea id="host-property-item" rows="3" spellcheck="false">
+{ "modelId": "local-model", "localId": 1 }</textarea
+                  >
+                </label>
+                <div class="host-api-actions">
+                  <button
+                    id="host-get-properties"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    getProperties()
+                  </button>
+                  <button
+                    id="host-use-last-selection"
+                    type="button"
+                    class="host-demo-button host-demo-button--secondary"
+                  >
+                    Use last selected
+                  </button>
+                </div>
+              </section>
+            </div>
+          </details>
+
+          <details class="host-api-group">
+            <summary>Visibility and camera</summary>
+            <div class="host-api-group__body">
+              <section class="host-api-card">
+                <h2>Visibility operations</h2>
+                <label class="host-demo-field">
+                  <span>Grouped element IDs JSON</span>
+                  <textarea
+                    id="host-visibility-items"
+                    rows="5"
+                    spellcheck="false"
+                  >
+[
+  { "modelId": "local-model", "localIds": [1, 2, 3] }
+]</textarea
+                  >
+                </label>
+                <label class="host-api-checkbox">
+                  <input id="host-visibility-cascade" type="checkbox" checked />
+                  Cascade through spatial descendants
+                </label>
+                <div class="host-api-actions">
+                  <button id="host-hide" type="button" class="host-demo-button">
+                    hide()
+                  </button>
+                  <button id="host-show" type="button" class="host-demo-button">
+                    show()
+                  </button>
+                  <button
+                    id="host-isolate"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    isolate()
+                  </button>
+                  <button
+                    id="host-show-all"
+                    type="button"
+                    class="host-demo-button host-demo-button--secondary"
+                  >
+                    showAll()
+                  </button>
+                  <button
+                    id="host-restore-visibility"
+                    type="button"
+                    class="host-demo-button host-demo-button--secondary"
+                  >
+                    restoreVisibility()
+                  </button>
+                  <button
+                    id="host-use-selection-visibility"
+                    type="button"
+                    class="host-demo-button host-demo-button--secondary"
+                  >
+                    Use current selection
+                  </button>
+                </div>
+              </section>
+
+              <section class="host-api-card">
+                <h2>Camera and rendering</h2>
+                <div class="host-api-inline host-api-inline--wrap">
+                  <button
+                    id="host-fit-view"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    fitView()
+                  </button>
+                  <label class="host-api-checkbox"
+                    ><input id="host-edges-visible" type="checkbox" /> Edges
+                    visible</label
+                  >
+                  <button
+                    id="host-set-edges"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    setEdges()
+                  </button>
+                  <label class="host-demo-field host-demo-field--short">
+                    <span>Ground mode</span>
+                    <select id="host-ground-mode">
+                      <option value="grid" selected>grid</option>
+                      <option value="map">map</option>
+                      <option value="none">none</option>
+                    </select>
+                  </label>
+                  <button
+                    id="host-set-ground-mode"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    setGroundMode()
+                  </button>
+                </div>
+              </section>
+            </div>
+          </details>
+
+          <details class="host-api-group">
+            <summary>Georeferencing and map</summary>
+            <div class="host-api-group__body">
+              <section class="host-api-card">
+                <h2>Set latitude / longitude</h2>
+                <div class="host-api-grid">
+                  <label class="host-demo-field">
+                    <span>Latitude</span>
+                    <input
+                      id="host-latitude"
+                      type="number"
+                      step="any"
+                      value="43.2630"
+                    />
+                  </label>
+                  <label class="host-demo-field">
+                    <span>Longitude</span>
+                    <input
+                      id="host-longitude"
+                      type="number"
+                      step="any"
+                      value="-2.9350"
+                    />
+                  </label>
+                  <label class="host-demo-field">
+                    <span>Country</span>
+                    <input
+                      id="host-country"
+                      type="text"
+                      maxlength="2"
+                      value="ES"
+                    />
+                  </label>
+                  <label class="host-demo-field">
+                    <span>NUTS</span>
+                    <input id="host-nuts" type="text" value="ES21" />
+                  </label>
+                  <label class="host-demo-field host-api-span-2">
+                    <span>Address</span>
+                    <input id="host-address" type="text" value="Bilbao" />
+                  </label>
+                </div>
+                <div class="host-api-actions">
+                  <button
+                    id="host-apply-location"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    setLocation()
+                  </button>
+                  <button
+                    id="host-use-bim-location"
+                    type="button"
+                    class="host-demo-button host-demo-button--secondary"
+                  >
+                    Clear host override / use BIM
+                  </button>
+                </div>
+              </section>
+
+              <section class="host-api-card">
+                <h2>Complete geo-reference</h2>
+                <label class="host-demo-field">
+                  <span>ProjectGeoReference JSON</span>
+                  <textarea id="host-geo-reference" rows="6" spellcheck="false">
+{
+  "latitude": 43.263,
+  "longitude": -2.935,
+  "address": "Bilbao",
+  "countryCode": "ES",
+  "nutsId": "ES21",
+  "source": "manual"
+}</textarea
+                  >
+                </label>
+                <div class="host-api-actions">
+                  <button
+                    id="host-set-geo-reference"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    setGeoReference()
+                  </button>
+                  <button
+                    id="host-get-geo-reference"
+                    type="button"
+                    class="host-demo-button host-demo-button--secondary"
+                  >
+                    getGeoReference()
+                  </button>
+                  <button
+                    id="host-clear-geo-reference"
+                    type="button"
+                    class="host-demo-button host-demo-button--secondary"
+                  >
+                    setGeoReference(undefined)
+                  </button>
+                </div>
+              </section>
+            </div>
+          </details>
+
+          <details class="host-api-group">
+            <summary>Semantic queries</summary>
+            <div class="host-api-group__body">
+              <section class="host-api-card">
+                <h2>Run and colour query</h2>
+                <label class="host-demo-field">
+                  <span>IfcQueryDefinition JSON</span>
+                  <textarea
+                    id="host-query-definition"
+                    rows="12"
+                    spellcheck="false"
+                  >
+{
+  "id": "external-walls",
+  "name": "External walls",
+  "categories": ["IFCWALL"],
+  "includeSubclasses": true,
+  "logicalOperator": "and",
+  "clauses": [
+    {
+      "source": "property",
+      "propertySet": "Pset_WallCommon",
+      "name": "IsExternal",
+      "operator": "equals",
+      "value": true
+    }
+  ]
+}</textarea
+                  >
+                </label>
+                <label class="host-demo-field">
+                  <span>IfcQueryResult JSON (filled after runQuery)</span>
+                  <textarea
+                    id="host-query-result"
+                    rows="7"
+                    spellcheck="false"
+                    placeholder="Query result appears here and can be edited before colourQuery()."
+                  ></textarea>
+                </label>
+                <div class="host-api-actions">
+                  <button
+                    id="host-run-query"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    runQuery()
+                  </button>
+                  <button
+                    id="host-colour-query"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    colourQuery()
+                  </button>
+                  <button
+                    id="host-clear-query-colouring"
+                    type="button"
+                    class="host-demo-button host-demo-button--secondary"
+                  >
+                    clearQueryColouring()
+                  </button>
+                </div>
+              </section>
+            </div>
+          </details>
+
+          <details class="host-api-group">
+            <summary>Property audit</summary>
+            <div class="host-api-group__body">
+              <section class="host-api-card">
+                <h2>Discover, run and colour audit</h2>
+                <label class="host-demo-field">
+                  <span>IfcAuditorDefinition JSON</span>
+                  <textarea
+                    id="host-audit-definition"
+                    rows="13"
+                    spellcheck="false"
+                  >
+{
+  "id": "wall-u-value",
+  "name": "Wall thermal transmittance",
+  "ifcClass": "IFCWALL",
+  "includeSubclasses": true,
+  "propertySet": "Pset_WallCommon",
+  "propertyName": "ThermalTransmittance",
+  "mode": "auto",
+  "bucketCount": 5,
+  "numericRangeMode": "equal-ranges",
+  "maxTextBuckets": 12,
+  "startColor": "#1d4ed8",
+  "endColor": "#67e8f9"
+}</textarea
+                  >
+                </label>
+                <label class="host-demo-field">
+                  <span>IfcAuditorResult JSON (filled after runAudit)</span>
+                  <textarea
+                    id="host-audit-result"
+                    rows="8"
+                    spellcheck="false"
+                    placeholder="Audit result appears here and can be edited before colourAudit()."
+                  ></textarea>
+                </label>
+                <label class="host-demo-field">
+                  <span>IfcAuditorIndex JSON (filled by getAuditIndex)</span>
+                  <textarea
+                    id="host-audit-index"
+                    rows="6"
+                    spellcheck="false"
+                    placeholder="Available IFC classes, property sets and properties."
+                  ></textarea>
+                </label>
+                <div class="host-api-actions">
+                  <button
+                    id="host-get-audit-index"
+                    type="button"
+                    class="host-demo-button host-demo-button--secondary"
+                  >
+                    getAuditIndex()
+                  </button>
+                  <button
+                    id="host-run-audit"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    runAudit()
+                  </button>
+                  <button
+                    id="host-colour-audit"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    colourAudit()
+                  </button>
+                  <button
+                    id="host-clear-audit-colouring"
+                    type="button"
+                    class="host-demo-button host-demo-button--secondary"
+                  >
+                    clearAuditColouring()
+                  </button>
+                </div>
+              </section>
+            </div>
+          </details>
+
+
+          <details class="host-api-group">
+            <summary>IDS checker</summary>
+            <div class="host-api-group__body">
+              <section class="host-api-card">
+                <h2>Load, run and colour IDS</h2>
+                <label class="host-demo-field">
+                  <span>IDS XML file</span>
+                  <input id="host-ids-file" type="file" accept=".ids,.xml,application/xml,text/xml" />
+                </label>
+                <label class="host-demo-field">
+                  <span>IDS URL</span>
+                  <input id="host-ids-url" type="url" placeholder="https://example.com/model-check.ids" />
+                </label>
+                <label class="host-demo-field">
+                  <span>IfcIdsCheckResult JSON (filled after runIdsCheck)</span>
+                  <textarea id="host-ids-result" rows="8" spellcheck="false" placeholder="IDS result appears here and can be edited before colourIds()."></textarea>
+                </label>
+                <div class="host-api-actions">
+                  <button id="host-load-ids-file" type="button" class="host-demo-button">loadIds(file)</button>
+                  <button id="host-load-ids-url" type="button" class="host-demo-button">loadIds(url)</button>
+                  <button id="host-run-ids" type="button" class="host-demo-button">runIdsCheck()</button>
+                  <button id="host-colour-ids" type="button" class="host-demo-button">colourIds()</button>
+                  <button id="host-clear-ids" type="button" class="host-demo-button host-demo-button--secondary">clearIds()</button>
+                </div>
+              </section>
+            </div>
+          </details>
+
+          <details class="host-api-group">
+            <summary>Annotations</summary>
+            <div class="host-api-group__body">
+              <section class="host-api-card">
+                <h2>Configured annotation dictionary</h2>
+                <p class="host-api-card__hint">Loaded from <code>viewer.config.json</code>. Types absent from this allow-list are ignored by annotation mutation commands.</p>
+                <label class="host-demo-field">
+                  <span>IfcAnnotationTypeDefinition[]</span>
+                  <textarea id="host-annotation-types" rows="12" spellcheck="false" placeholder="Use getAnnotationTypes() to inspect the iframe configuration."></textarea>
+                </label>
+                <div class="host-api-actions">
+                  <button id="host-get-annotation-types" type="button" class="host-demo-button host-demo-button--secondary">getAnnotationTypes()</button>
+                </div>
+              </section>
+
+              <section class="host-api-card">
+                <h2>Additive annotation collection</h2>
+                <label class="host-demo-field">
+                  <span>IfcAnnotationMarker[] JSON</span>
+                  <textarea id="host-annotations" rows="15" spellcheck="false">
+[
+  {
+    "id": "host-comment-1",
+    "kind": "ifc-annotation",
+    "annotationType": "COMMENT",
+    "geometryType": "POINT",
+    "active": true,
+    "label": "Host API test annotation",
+    "description": "Example annotation supplied by the parent application.",
+    "modelId": "local-model",
+    "localId": 1,
+    "scene": { "x": 0, "y": 0, "z": 0 },
+    "ifc": { "x": 0, "y": 0, "z": 0 },
+    "points": [
+      {
+        "modelId": "local-model",
+        "localId": 1,
+        "scene": { "x": 0, "y": 0, "z": 0 },
+        "ifc": { "x": 0, "y": 0, "z": 0 }
+      }
+    ],
+    "createdAt": "2026-07-01T12:00:00.000Z",
+    "source": "host"
+  }
+]</textarea>
+                </label>
+                <label class="host-demo-field">
+                  <span>Mutation mode</span>
+                  <select id="host-annotations-mode">
+                    <option value="upsert" selected>upsert (add/update, default)</option>
+                    <option value="append">append (new ids only)</option>
+                    <option value="replace">replace (explicit full snapshot)</option>
+                  </select>
+                </label>
+                <div class="host-api-actions">
+                  <button id="host-set-annotations" type="button" class="host-demo-button">setAnnotations()</button>
+                  <button id="host-add-annotations" type="button" class="host-demo-button">addAnnotations()</button>
+                </div>
+              </section>
+
+              <section class="host-api-card">
+                <h2>Get/remove/clear</h2>
+                <label class="host-demo-field">
+                  <span>IfcAnnotationQuery JSON</span>
+                  <textarea id="host-annotations-query" rows="7" spellcheck="false">
+{
+  "includeDrafts": true,
+  "activeOnly": false
+}</textarea>
+                </label>
+                <label class="host-demo-field">
+                  <span>Annotation ids to remove (JSON string[])</span>
+                  <textarea id="host-annotation-remove-ids" rows="3" spellcheck="false">["host-comment-1"]</textarea>
+                </label>
+                <div class="host-api-actions">
+                  <button id="host-get-annotations" type="button" class="host-demo-button host-demo-button--secondary">getAnnotations()</button>
+                  <button id="host-remove-annotations" type="button" class="host-demo-button host-demo-button--secondary">removeAnnotations()</button>
+                  <button id="host-clear-annotations" type="button" class="host-demo-button host-demo-button--secondary">clearAnnotations()</button>
+                </div>
+              </section>
+
+              <section class="host-api-card">
+                <h2>Per-type visibility</h2>
+                <label class="host-demo-field">
+                  <span>IfcAnnotationTypeVisibility JSON</span>
+                  <textarea id="host-annotation-visibility" rows="8" spellcheck="false">
+{
+  "INSPECTION_POINT": true,
+  "DEFECT": true,
+  "COMMENT": true,
+  "ZONE": true,
+  "PROPOSAL": true
+}</textarea>
+                </label>
+                <div class="host-api-actions">
+                  <button id="host-set-annotation-visibility" type="button" class="host-demo-button">setAnnotationTypeVisibility()</button>
+                  <button id="host-get-annotation-visibility" type="button" class="host-demo-button host-demo-button--secondary">getAnnotationTypeVisibility()</button>
+                </div>
+              </section>
+            </div>
+          </details>
+
+          <details class="host-api-group">
+            <summary>Cache and raw protocol</summary>
+            <div class="host-api-group__body">
+              <section class="host-api-card">
+                <h2>Persistent browser cache</h2>
+                <div class="host-api-actions">
+                  <button
+                    id="host-cache-stats"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    getCacheStats()
+                  </button>
+                  <button
+                    id="host-cache-clear"
+                    type="button"
+                    class="host-demo-button host-demo-button--danger"
+                  >
+                    clearCache()
+                  </button>
+                </div>
+              </section>
+
+              <section class="host-api-card">
+                <h2>Raw postMessage command</h2>
+                <p class="host-api-help">
+                  Escape hatch for testing a protocol command not yet
+                  represented by a dedicated form.
+                </p>
+                <div class="host-api-grid">
+                  <label class="host-demo-field host-api-span-2">
+                    <span>Command</span>
+                    <input
+                      id="host-raw-command"
+                      type="text"
+                      value="viewer.ping"
+                    />
+                  </label>
+                  <label class="host-demo-field host-api-span-2">
+                    <span>Payload JSON</span>
+                    <textarea id="host-raw-payload" rows="5" spellcheck="false">
+{}</textarea
+                    >
+                  </label>
+                </div>
+                <div class="host-api-actions">
+                  <button
+                    id="host-send-raw-command"
+                    type="button"
+                    class="host-demo-button"
+                  >
+                    client.request()
+                  </button>
+                </div>
+              </section>
+            </div>
+          </details>
+        </div>
+
+        <aside
+          class="host-console-panel"
+          aria-label="Iframe API response console"
+        >
+          <div class="host-console-panel__header">
+            <div>
+              <strong>Request / response console</strong>
+              <span>API calls, responses and unsolicited iframe events</span>
+            </div>
+            <label class="host-api-checkbox"
+              ><input id="host-console-autoscroll" type="checkbox" checked />
+              Auto-scroll</label
+            >
+          </div>
+          <pre id="host-console" class="host-console" aria-live="polite"></pre>
+        </aside>
+      </div>
+    </header>
+
+    <main class="host-demo-main">
+      <iframe
+        id="host-viewer-frame"
+        class="host-demo-frame"
+        title="Standalone IFC viewer canvas"
+        allow="fullscreen"
+      ></iframe>
+    </main>
+
+  </body>
+</html>

@@ -1,0 +1,234 @@
+{
+  "viewerId": "openbim-ifc-viewer",
+  "wasmPath": "./wasm/web-ifc/",
+  "language": "en",
+  "translationsPath": "./i18n",
+  "appearance": {
+    "theme": "light",
+    "customStylesheetUrl": null,
+    "tokens": {}
+  },
+  "defaultGroundMode": "grid",
+  "defaultMapLayerId": "carto-voyager",
+  "cache": {
+    "enabled": true,
+    "databaseName": "openbim-ifc-viewer-cache",
+    "maxBytes": 536870912,
+    "maxAgeDays": 30,
+    "strategy": "prefer-cache"
+  },
+  "bridge": {
+    "enabled": true,
+    "allowedParentOrigins": [],
+    "allowWildcardOriginInDevelopment": true
+  },
+  "ui": {
+    "showLeftPanel": true,
+    "showRightPanel": true,
+    "leftPanelTabs": {
+      "spatial": {
+        "visible": true,
+        "showProducts": true
+      },
+      "types": {
+        "visible": true,
+        "showProducts": true
+      },
+      "classifications": {
+        "visible": true,
+        "showProducts": true
+      },
+      "groups": {
+        "visible": true,
+        "showProducts": true
+      }
+    },
+    "showProperties": true,
+    "showMaterials": true,
+    "showRelations": true,
+    "showQueryTool": true,
+    "showAuditTool": true,
+    "showAnnotationsTool": true,
+    "showIdsChecker": true,
+    "showHelp": true,
+    "iconSize": "medium",
+    "showLanguageSelector": true,
+    "showThemeSelector": true,
+    "showIfcUploader": true
+  },
+  "mapLayers": [
+    {
+      "id": "carto-voyager",
+      "enabled": true,
+      "label": "Street map (CARTO Voyager)",
+      "role": "base",
+      "type": "xyz",
+      "tileUrl": "https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png",
+      "defaultVisible": true,
+      "minZoom": 2,
+      "maxZoom": 19,
+      "tileSize": 256,
+      "attribution": "\u00a9 OpenStreetMap contributors \u00a9 CARTO"
+    },
+    {
+      "id": "pnoa-orthophoto",
+      "enabled": true,
+      "label": "Aerial photo (Spain PNOA)",
+      "role": "aerial",
+      "type": "wmts",
+      "tileUrl": "https://www.ign.es/wmts/pnoa-ma?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=OI.OrthoimageCoverage&STYLE=default&FORMAT=image/jpeg&TILEMATRIXSET=GoogleMapsCompatible&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}",
+      "minZoom": 5,
+      "maxZoom": 19,
+      "tileSize": 256,
+      "attribution": "PNOA / IGN-CNIG",
+      "countryCodes": [
+        "ES"
+      ],
+      "nutsPrefixes": [
+        "ES"
+      ],
+      "priority": 100
+    },
+    {
+      "id": "eox-sentinel2-cloudless-2024",
+      "enabled": true,
+      "label": "Aerial photo (Europe fallback)",
+      "role": "aerial",
+      "type": "wmts",
+      "tileUrl": "https://tiles.maps.eox.at/wmts?layer=s2cloudless-2024_3857&style=default&tilematrixset=GoogleMapsCompatible&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix={z}&TileCol={x}&TileRow={y}",
+      "minZoom": 2,
+      "maxZoom": 16,
+      "tileSize": 256,
+      "attribution": "Sentinel-2 cloudless / EOX / Copernicus Sentinel data",
+      "fallback": true
+    }
+  ],
+  "capabilities": {
+    "selection": true,
+    "hiding": true,
+    "isolation": true
+  },
+  "annotations": {
+    "types": [
+      {
+        "id": "INSPECTION_POINT",
+        "label": "Inspection point",
+        "color": "#2563eb",
+        "geometryTypes": [
+          "POINT"
+        ],
+        "defaultGeometryType": "POINT",
+        "visibleByDefault": true,
+        "enabled": true,
+        "editorEnabled": true,
+        "description": "Point used to register an inspection or verification location.",
+        "labels": {
+          "en": "Inspection point",
+          "es": "Punto de inspecci\u00f3n",
+          "eu": "Ikuskapen-puntua",
+          "fr": "Point d\u2019inspection"
+        }
+      },
+      {
+        "id": "DEFECT",
+        "label": "Defect",
+        "color": "#dc2626",
+        "geometryTypes": [
+          "POINT",
+          "POLYLINE",
+          "POLYGON"
+        ],
+        "defaultGeometryType": "POINT",
+        "visibleByDefault": true,
+        "enabled": true,
+        "editorEnabled": true,
+        "description": "Observed defect, damage or non-conformity.",
+        "labels": {
+          "en": "Defect",
+          "es": "Defecto",
+          "eu": "Akatsa",
+          "fr": "D\u00e9faut"
+        }
+      },
+      {
+        "id": "COMMENT",
+        "label": "Comment",
+        "color": "#f59e0b",
+        "geometryTypes": [
+          "POINT",
+          "POLYLINE"
+        ],
+        "defaultGeometryType": "POINT",
+        "visibleByDefault": true,
+        "enabled": true,
+        "editorEnabled": true,
+        "description": "General review comment or note.",
+        "labels": {
+          "en": "Comment",
+          "es": "Comentario",
+          "eu": "Iruzkina",
+          "fr": "Commentaire"
+        }
+      },
+      {
+        "id": "ZONE",
+        "label": "Zone",
+        "color": "#16a34a",
+        "geometryTypes": [
+          "POLYGON"
+        ],
+        "defaultGeometryType": "POLYGON",
+        "visibleByDefault": true,
+        "enabled": true,
+        "editorEnabled": true,
+        "description": "Polygonal area of interest.",
+        "labels": {
+          "en": "Zone",
+          "es": "Zona",
+          "eu": "Eremua",
+          "fr": "Zone"
+        }
+      },
+      {
+        "id": "PROPOSAL",
+        "label": "Proposal",
+        "color": "#7c3aed",
+        "geometryTypes": [
+          "POINT",
+          "POLYLINE",
+          "POLYGON"
+        ],
+        "defaultGeometryType": "POINT",
+        "visibleByDefault": true,
+        "enabled": true,
+        "editorEnabled": true,
+        "description": "Design or intervention proposal.",
+        "labels": {
+          "en": "Proposal",
+          "es": "Propuesta",
+          "eu": "Proposamena",
+          "fr": "Proposition"
+        }
+      },
+      {
+        "id": "IMAGE_OVERLAY",
+        "label": "Image overlay",
+        "color": "#0891b2",
+        "geometryTypes": [
+          "POLYGON"
+        ],
+        "defaultGeometryType": "POLYGON",
+        "visibleByDefault": true,
+        "enabled": true,
+        "editorEnabled": false,
+        "description": "Projected image annotation created through the specialised image-overlay workflow.",
+        "labels": {
+          "en": "Image overlay",
+          "es": "Superposici\u00f3n de imagen",
+          "eu": "Irudi-geruza",
+          "fr": "Superposition d\u2019image"
+        }
+      }
+    ]
+  }
+}

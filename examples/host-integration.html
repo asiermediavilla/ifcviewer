@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IFC Viewer Host Integration Example</title>
+    <style>
+      html, body { height: 100%; margin: 0; font-family: system-ui, sans-serif; }
+      body { display: grid; grid-template-rows: auto 1fr; }
+      header { align-items: center; display: flex; flex-wrap: wrap; gap: .6rem; padding: .75rem; border-bottom: 1px solid #d5dbe5; }
+      input[type="url"] { min-width: 24rem; padding: .5rem; }
+      button { padding: .5rem .75rem; }
+      iframe { border: 0; height: 100%; width: 100%; }
+      #status { color: #526071; font-size: .9rem; margin-left: auto; }
+    </style>
+    <script type="module" crossorigin src="../assets/hostExample-CF3_5NNp.js"></script>
+    <link rel="modulepreload" crossorigin href="../assets/modulepreload-polyfill-Dezn_h7o.js">
+    <link rel="modulepreload" crossorigin href="../assets/IframeProtocol-hK1aq46i.js">
+    <link rel="modulepreload" crossorigin href="../sdk/ifc-viewer-client.js">
+  </head>
+  <body>
+    <header>
+      <input id="model-url" type="url" placeholder="https://example.org/model.ifc" />
+      <button id="load-url">Load URL</button>
+      <input id="model-file" type="file" accept=".ifc,.frag,.fragments" />
+      <button id="fit">Fit</button>
+      <button id="show-all">Show all</button>
+      <input id="latitude" type="number" step="any" placeholder="Latitude" />
+      <input id="longitude" type="number" step="any" placeholder="Longitude" />
+      <button id="set-map">Set map</button>
+      <button id="model-map">Use BIM location</button>
+      <label>Language
+        <select id="viewer-language">
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="eu">Euskara</option>
+          <option value="fr">Français</option>
+        </select>
+      </label>
+      <label>Theme
+        <select id="viewer-theme">
+          <option value="default">Default</option>
+          <option value="light" selected>Light</option>
+          <option value="dark">Dark</option>
+          <option value="green">Green</option>
+          <option value="tecnalia">Tecnalia</option>
+          <option value="system">System</option>
+        </select>
+      </label>
+      <label><input id="allow-selection" type="checkbox" checked /> Selection</label>
+      <label><input id="allow-hiding" type="checkbox" checked /> Hiding</label>
+      <label><input id="allow-isolation" type="checkbox" checked /> Isolation</label>
+      <span id="status">Creating iframe…</span>
+    </header>
+    <iframe id="viewer" title="Standalone IFC viewer" allow="fullscreen"></iframe>
+
+  </body>
+</html>

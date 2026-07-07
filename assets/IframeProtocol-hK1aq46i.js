@@ -1,0 +1,1 @@
+var e=`openbim-ifc-viewer`;function t(e){if(!e||typeof e!=`object`)return!1;let t=e;return t.channel===`openbim-ifc-viewer`&&t.version===1&&t.type===`request`&&typeof t.requestId==`string`&&typeof t.command==`string`}export{t as n,e as t};
